@@ -10,17 +10,37 @@ import axios from "axios";
 
 let config = {
   // baseURL: process.env.baseURL || process.env.apiUrl || ""
+  baseURL: "http://www.kangliuyong.com:10002/"
   // timeout: 60 * 1000, // Timeout
   // withCredentials: true, // Check cross-site Access-Control
 };
 
 const _axios = axios.create(config);
 
+// 请求拦截器
 _axios.interceptors.request.use(
+
   function(config) {
     // Do something before request is sent
+
+    if(config.method === 'post') {
+
+      let paramsString = ';'
+
+      for (const key in config.data) {
+
+        paramsString +=  `${key}=${config.data[key]}&`
+
+      }
+
+      config.data = paramsString.slice(1,-1)
+
+    }
+        
     return config;
   },
+
+
   function(error) {
     // Do something with request error
     return Promise.reject(error);
@@ -39,9 +59,12 @@ _axios.interceptors.response.use(
   }
 );
 
-Plugin.install = function(Vue, options) {
+// Plugin.install = function(Vue, options) {
+Plugin.install = function(Vue) {
+
   Vue.axios = _axios;
   window.axios = _axios;
+  
   Object.defineProperties(Vue.prototype, {
     axios: {
       get() {

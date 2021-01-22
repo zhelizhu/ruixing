@@ -47,7 +47,7 @@
         <van-cell value="忘记密码" />
       </div>
 
-      <div style="margin: 16px" background="#232773">
+      <div style="margin: 16px" background="#232773" @click="loginEvent">
         <van-button round block type="info" native-type="submit"
           >登录</van-button
         >
@@ -104,7 +104,7 @@
           <!-- 昵称 -->
 
           <van-field
-            v-model="userRegisterInfo.userRegisterName"
+            v-model="userRegisterInfo.userRegisterNickName"
             name="昵称"
             label="昵称"
             placeholder="昵称"
@@ -148,6 +148,7 @@ export default {
       // 用户注册信息
 
       userRegisterInfo: {
+
         userRegisterPhone: "",
 
         userRegisterPass: "",
@@ -170,13 +171,13 @@ export default {
   methods: {
     // 控制眼睛
 
-    togglePassword() {
+    togglePassword () {
       this.isToggleType = !this.isToggleType;
     },
 
     // 注册事件
 
-    registerEvent() {
+    registerEvent () {
 
       let registerObj = {
         // 手机号码正则
@@ -192,6 +193,7 @@ export default {
         // 密码正则
 
         password: {
+
           value: this.userRegisterInfo.userRegisterPass,
 
           reg: /^[A-Za-z]\w{5,15}$/,
@@ -202,6 +204,7 @@ export default {
         // 昵称正则
 
         nickName: {
+          
           value: this.userRegisterInfo.userRegisterNickName,
 
           reg: /^[\u4e00-\u9fa5A-Za-z0-9]{1,10}$/,
@@ -216,7 +219,229 @@ export default {
 
       }
 
+      this.$toast.loading({
+
+        message: '加载中',
+
+        forbidClick: true,
+
+        // 0不能关闭
+        duration: 0
+
+      })
+
+      this.axios({
+        
+        method: 'POST',
+
+        url:'/register',
+
+        // post:需要挂载到data
+
+        data:{
+
+          appkey:"U2FsdGVkX19WSQ59Cg+Fj9jNZPxRC5y0xB1iV06BeNA=",
+
+          nickName: this.userRegisterInfo.userRegisterNickName,
+
+          password: this.userRegisterInfo.userRegisterPass,
+
+          phone: this.userRegisterInfo.userRegisterPhone
+
+        }
+
+      }).then((res) => {
+        
+        if(res.data.code === 100) {
+
+          this.showPopup = false
+
+          this.$toast.clear()
+
+          this.$toast({
+
+          message: res.data.msg,
+
+          position: 'bottom',
+
+          }) 
+
+          for (const key in this.userRegisterInfo) {
+            
+            this.userRegisterInfo[key] = ''
+
+          }
+
+        }
+        else{
+
+          this.$toast({
+
+          message: `${res.data.msg}`,
+
+          position: 'bottom',
+
+          // 禁止点击背景
+
+          forbidClick :true
+
+          })  
+
+        }
+
+      }).catch(() => {
+
+          this.$toast.clear()
+        
+          this.$toast({
+
+          message: '服务器忙！',
+
+          position: 'bottom',
+
+          // 禁止点击背景
+
+          forbidClick :true
+
+          }) 
+
+      });
+
     },
+
+    // 注册事件
+
+    loginEvent () {
+      
+      let loginObj = {
+        // 手机号码正则
+
+        phone: {
+          value: this.userLoginInfo.phoneNumber,
+
+          reg: /^1[3-9]\d{9}$/,
+
+          errMsg: "手机号码格式不正确",
+        },
+
+        // 密码正则
+
+        password: {
+
+          value: this.userLoginInfo.password,
+
+          reg: /^[A-Za-z]\w{5,15}$/,
+
+          errMsg: "密码格式不正确(密码支持字母数字_组合首字符必须为字母)",
+        }
+
+      }
+
+      if (!utils.validForm( loginObj )) {
+
+        return 
+
+      }
+
+      this.$toast.loading({
+
+        message: '登录中',
+
+        forbidClick: true,
+
+        // 0不能关闭
+        duration: 0
+
+      })
+
+        this.axios({
+        
+        method: 'POST',
+
+        url:'/login',
+
+        // post:需要挂载到data
+
+        data:{
+
+          appkey: this.appKey,
+
+          password: this.userLoginInfo.password,
+
+          phone: this.userLoginInfo.phoneNumber
+
+        }
+
+      }).then((res) => {
+        
+        if(res.data.code === 200) {
+
+          this.showPopup = false
+
+          this.$toast.clear()
+
+          this.$toast({
+
+          message: res.data.msg,
+
+          position: 'bottom',
+
+          }) 
+
+          for (const key in this.userLoginInfo) {
+            
+            this.userLoginInfo[key] = ''
+
+          }
+
+          // 本地存储
+
+          // localStorage.setItem('userToken',res.data.token)
+
+          // cookies
+
+          
+          this.$cookie.set('userToken', res.data.token, 1)
+
+
+          this.$router.push('/')
+
+
+        }
+        else{
+
+          this.$toast({
+
+          message: `${res.data.msg}`,
+
+          position: 'bottom',
+
+          // 禁止点击背景
+
+          forbidClick :true
+
+          })  
+
+        }
+
+      }).catch(() => {
+
+          this.$toast.clear()
+        
+          this.$toast({
+
+          message: '服务器忙！',
+
+          position: 'bottom',
+
+          // 禁止点击背景
+
+          forbidClick :true
+
+          }) 
+
+      });
+    }
 
   },
 
