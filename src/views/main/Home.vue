@@ -141,7 +141,6 @@ export default {
       })
         .then((res) => {
 
-          console.log(res);
 
           if (res.data.code === 300) {
             this.bannerList = res.data.result;

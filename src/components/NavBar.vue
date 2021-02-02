@@ -20,10 +20,9 @@
 export default {
   methods: {
     onClickLeft() {
-      console.log("left");
     },
     onClickRight() {
-      console.log("right");
+      this.$router.push('/')
     },
   },
 };

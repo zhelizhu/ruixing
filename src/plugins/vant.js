@@ -81,3 +81,24 @@ import { AddressList } from 'vant'
 
 Vue.use(AddressList)
 
+import { Empty } from 'vant'
+
+Vue.use(Empty)
+
+import { AddressEdit } from 'vant';
+
+Vue.use(AddressEdit);
+
+import { Badge } from 'vant';
+
+Vue.use(Badge);
+
+import { Uploader } from 'vant';
+
+Vue.use(Uploader);
+
+import { Grid, GridItem } from 'vant';
+
+Vue.use(Grid);
+Vue.use(GridItem);
+

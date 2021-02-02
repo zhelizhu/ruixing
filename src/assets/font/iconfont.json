@@ -1,0 +1,37 @@
+{
+  "id": "",
+  "name": "",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "3878655",
+      "name": "奶茶",
+      "font_class": "cup",
+      "unicode": "e610",
+      "unicode_decimal": 58896
+    },
+    {
+      "icon_id": "5072215",
+      "name": "咖啡",
+      "font_class": "coffee",
+      "unicode": "e666",
+      "unicode_decimal": 58982
+    },
+    {
+      "icon_id": "5157613",
+      "name": "拿铁",
+      "font_class": "natie",
+      "unicode": "e604",
+      "unicode_decimal": 58884
+    },
+    {
+      "icon_id": "9016590",
+      "name": "冰棒",
+      "font_class": "bingbang",
+      "unicode": "e60a",
+      "unicode_decimal": 58890
+    }
+  ]
+}

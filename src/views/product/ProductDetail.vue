@@ -81,7 +81,7 @@
            <van-goods-action-icon icon="like-o" v-else @click="likeProduct()" text="未收藏" />
 
            <van-goods-action-button color="#6a91ec" type="warning" @click="addCartProduct()" text="加入购物车" />
-           <van-goods-action-button color="#0c34ba" type="danger" text="立即购买" />
+           <van-goods-action-button color="#0c34ba" type="danger"  @click="buyNow()" text="立即购买" />
 
         </van-goods-action>
 
@@ -187,8 +187,6 @@ export default {
                         data.rulesData.push(currentRule)
 
                     } )
-
-                    console.log(data);
 
                     data.desc = data.desc.split(/\n/)
 
@@ -373,7 +371,7 @@ export default {
         
         // 加入购物车
 
-        addCartProduct() {
+        addCartProduct(isBuy) {
 
             let rules = []
 
@@ -412,7 +410,6 @@ export default {
             })
             .then((res)=>{
 
-                console.log(res);
 
                 if(res.data.code === 700) {
 
@@ -423,6 +420,12 @@ export default {
                 }
 
                 if(res.data.code === 3000) {
+
+                    if(isBuy){
+
+                        this.$router.push({name:'Pay',query:{sids:res.data.sid}})
+
+                    }
 
                     if(res.data.status === 1){
 
@@ -455,6 +458,14 @@ export default {
 
             this.$router.push('/')
 
+        },
+
+        //立即购买
+
+        buyNow() {
+
+            this.addCartProduct(true)
+
         }
 
 
@@ -462,8 +473,6 @@ export default {
 
 
     created(){
-
-        console.log(this.cartCount);
 
         this.getProductDetail()
 

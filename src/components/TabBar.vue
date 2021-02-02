@@ -18,7 +18,7 @@
 
         :to="item.to"
 
-        :badge="item.badge"
+        :badge="item.badge === 0 ? '':item.badge"
 
         :dot="item.dot"
 
@@ -113,8 +113,6 @@ export default {
             active: "friends",
             inactive: "friends-o",
           },
-
-          dot: true,
 
           text: "我的",
         },

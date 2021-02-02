@@ -44,7 +44,7 @@
       />
 
       <div class="forget">
-        <van-cell value="忘记密码" />
+        <van-cell value="忘记密码" to="/forgotPwd"/>
       </div>
 
       <div style="margin: 16px" background="#232773" @click="loginEvent">
